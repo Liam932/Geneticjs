@@ -1,17 +1,15 @@
-var lib = require('./lib');
+var lib = require('../lib');
 
-var combination = function(ind1, ind2) {
+var combination = function (ind1, ind2) {
     return {
-        x: (ind1.x + ind2.x) / 2,
-        y: (ind1.y + ind2.y) / 2
+        x: (ind1.x + ind2.x) / 2
     }
 };
 
-var mutation = function(ind) {
-  return {
-      x: 'random', // function(attr)
-      y: 'random'
-  };
+var mutation = function () {
+    return {
+        x: 'random'
+    };
 };
 
 var options = {
@@ -34,11 +32,6 @@ var individual = {
         max: Math.PI * 2,
         type: 'float'
     }
-    //y: {
-    //    min: -1000,
-    //    max: 1000,
-    //    type: 'float'
-    //}
 };
 
 function problem(ind) {
@@ -49,8 +42,10 @@ function problem(ind) {
 
 var evolve = lib();
 
-evolve.setConfig(options);
-evolve.setIndividual(individual);
-evolve.setProblem(problem);
+var solution = evolve
+    .setConfig(options)
+    .setIndividual(individual)
+    .setProblem(problem)
+    .run();
 
-evolve.run();
+console.log(solution);
