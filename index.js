@@ -31,11 +31,13 @@ var options = {
 var individual = {
     x: {
         min: -1000,
-        max: 1000
+        max: 1000,
+        type: 'float'
     },
     y: {
         min: -1000,
-        max: 1000
+        max: 1000,
+        type: 'float'
     }
 };
 
