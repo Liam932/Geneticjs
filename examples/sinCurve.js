@@ -3,7 +3,7 @@ var lib = require('../lib');
 var combination = function (ind1, ind2) {
     return {
         x: (ind1.x + ind2.x) / 2
-    }
+    };
 };
 
 var mutation = function () {
@@ -36,7 +36,7 @@ var individual = {
 
 function problem(ind) {
     //Solution 1.5707963267948966
-    return Math.sin(ind.x)
+    return Math.sin(ind.x);
 }
 
 
