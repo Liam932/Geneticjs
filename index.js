@@ -4,10 +4,10 @@ var combination = function(ind1, ind2) {
     return {
         x: (ind1.x + ind2.x) / 2,
         y: (ind1.y + ind2.y) / 2
-    }
+    };
 };
 
-var mutation = function(ind) {
+var mutation = function() {
   return {
       x: 'random', // function(attr)
       y: 'random'

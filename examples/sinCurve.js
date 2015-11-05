@@ -13,15 +13,17 @@ var mutation = function () {
 };
 
 var options = {
-    generations: 1000,
-    populationSize: 30,
-    elites: 1,
-    mutationRate: 0.05,
+    generations: 10,
+    populationSize: 8,
+    elites: 0,
     breeding: {
         selectionOne: 'tournament',
         selectionTwo: 'tournament',
-        combinationFunction: combination,
-        mutationFunction: mutation
+        combinationFunction: combination
+    },
+    mutation: {
+        mutationFunction: mutation,
+        mutationRate: 0.05
     }
 };
 
