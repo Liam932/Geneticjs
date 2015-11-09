@@ -13,7 +13,7 @@ var mutation = function () {
 };
 
 var options = {
-    generations: 10,
+    generations: 100,
     populationSize: 8,
     elites: 0,
     breeding: {
@@ -36,18 +36,19 @@ var individual = {
     }
 };
 
-function problem(ind) {
+function problem(ind, callback) {
     //Solution 1.5707963267948966
-    return Math.sin(ind.x);
+    callback(null, Math.sin(ind.x));
 }
 
 
 var evolve = lib();
 
-var solution = evolve
+evolve
     .setConfig(options)
     .setIndividual(individual)
     .setProblem(problem)
-    .run();
+    .run(function (err, solution) {
+        console.log(solution);
+    });
 
-console.log(solution);
