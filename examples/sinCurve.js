@@ -1,4 +1,4 @@
-var lib = require('../lib');
+var Evolve = require('../lib');
 
 var combination = function (ind1, ind2) {
     return {
@@ -12,6 +12,21 @@ var mutation = function () {
     };
 };
 
+var individual = {
+    x: {
+        min: 0,
+        max: Math.PI * 2,
+        type: 'float'
+    }
+};
+
+function problem(ind, callback) {
+    //Solution 1.5707963267948966
+    setTimeout(function() {
+        callback(null, Math.sin(ind.x));
+    },1);
+}
+
 var options = {
     generations: 100,
     populationSize: 8,
@@ -24,31 +39,15 @@ var options = {
     mutation: {
         mutationFunction: mutation,
         mutationRate: 0.05
-    }
+    },
+    individual: individual,
+    problem: problem
 };
 
 
-var individual = {
-    x: {
-        min: 0,
-        max: Math.PI * 2,
-        type: 'float'
-    }
-};
+var evolve = new Evolve(options);
 
-function problem(ind, callback) {
-    //Solution 1.5707963267948966
-    callback(null, Math.sin(ind.x));
-}
-
-
-var evolve = lib();
-
-evolve
-    .setConfig(options)
-    .setIndividual(individual)
-    .setProblem(problem)
-    .run(function (err, solution) {
-        console.log(solution);
-    });
+evolve.run(function (err, solution) {
+    console.log(solution);
+});
 
