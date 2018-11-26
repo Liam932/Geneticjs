@@ -1,5 +1,6 @@
 import selectors from "./selectors";
 import { initAttribute } from "./population";
+import { individualToChromosome, chromosomeToIndividual } from "./individual";
 import uuid from "uuid/v4";
 
 const selectIndividuals = ({ population, selection = [] }) => {
@@ -19,8 +20,15 @@ const mutate = ({ individual, schema, mutationRate }) => {
   }, individual);
 };
 
-const combine = ({ individuals = [], combination }) =>
-  combination(...individuals);
+const combine = ({ individuals = [], schema }) => {
+  //Single Point Crossover
+  const [first, second] = individuals.map(individualToChromosome(schema));
+  const slicePoint = Math.round(first.representation.length / 2); //support more than single point
+  return (
+    first.representation.slice(0, slicePoint) +
+    second.representation.slice(slicePoint)
+  );
+};
 
 export const createEvolutionPipeline = ({
   selection = [],
@@ -30,7 +38,8 @@ export const createEvolutionPipeline = ({
 } = {}) => async ({ population }) => {
   const individuals = selectIndividuals({ population, selection });
   const newIndividual = combine({ individuals, combination, schema });
-  const mutated = mutate({ individual: newIndividual, mutationRate, schema });
+  // const mutated = mutate({ individual: newIndividual, mutationRate, schema });
+  const mutated = newIndividual;
   mutated.id = uuid();
   return mutated;
 };

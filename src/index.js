@@ -1,8 +1,6 @@
 import { createEvolutionPipeline } from "./pipeline";
-import {
-  createInitialPopulation,
-  calculateFitnessOfIndividual
-} from "./population";
+import { createInitialPopulation } from "./population";
+import { calculateFitnessOfIndividual } from "./individual";
 
 export default {
   createInitialPopulation,
