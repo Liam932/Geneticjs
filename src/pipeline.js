@@ -23,21 +23,18 @@ const mutate = ({ individual, schema, mutationRate }) => {
 const combine = ({ individuals = [], schema }) => {
   //Single Point Crossover
   const [first, second] = individuals.map(individualToChromosome(schema));
-  const slicePoint = Math.round(first.representation.length / 2); //support more than single point
-  return (
-    first.representation.slice(0, slicePoint) +
-    second.representation.slice(slicePoint)
-  );
+  const slicePoint = Math.round(first.length / 2); //support more than single point
+  const chromosome = first.slice(0, slicePoint) + second.slice(slicePoint);
+  return chromosomeToIndividual({ schema, chromosome });
 };
 
 export const createEvolutionPipeline = ({
   selection = [],
-  combination,
   mutationRate = 0.05,
   schema
 } = {}) => async ({ population }) => {
   const individuals = selectIndividuals({ population, selection });
-  const newIndividual = combine({ individuals, combination, schema });
+  const newIndividual = combine({ individuals, schema });
   // const mutated = mutate({ individual: newIndividual, mutationRate, schema });
   const mutated = newIndividual;
   mutated.id = uuid();

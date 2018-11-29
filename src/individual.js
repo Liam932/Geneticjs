@@ -1,13 +1,8 @@
-import {
-  initAttribute,
-  attributeToBinary,
-  attributefromBinary
-} from "./attributes";
+import { initAttribute } from "./attributes";
 import uuid from "uuid/v4";
 
-export const createIndividual = schema => () => {
+const createRawIndividual = schema => {
   const id = uuid();
-
   return Object.keys(schema).reduce(
     (acc, item) => {
       acc[item] = initAttribute(schema[item]);
@@ -17,35 +12,38 @@ export const createIndividual = schema => () => {
   );
 };
 
-// Not the way to do it!!
-// The schema needs more information about the binary representation or the attributes.
-// Maybe the attributes need to be instances themselves?
-
-export const individualToChromosome = schema => ind => {
-  return Object.keys(schema).reduce(
-    (acc, key) => {
-      const binaryValue = attributeToBinary(schema[key], ind[key]);
-      return {
-        attributes: {
-          ...acc.attributes,
-          [key]: binaryValue
-        },
-        representation: acc.representation + binaryValue,
-        id: ind.id
-      };
-    },
-    { representation: "", attributes: {}, id: ind.id }
-  );
+export const createIndividual = schema => () => {
+  const individual = createRawIndividual(schema);
+  return Object.keys(schema).reduce((acc, key) => {
+    acc[key].setRandomValue();
+    return acc;
+  }, individual);
 };
 
-export const chromosomeToIndividual = schema => ({ attributes, id } = {}) => {
-  return Object.keys(schema).reduce(
-    (acc, key) => {
-      acc[key] = attributefromBinary(schema[key], attributes[key]);
-      return acc;
+export const individualToChromosome = schema => ind => {
+  return Object.keys(schema).reduce((acc, key) => {
+    return acc + ind[key].toBinary();
+  }, "");
+};
+
+export const chromosomeToIndividual = ({ schema, chromosome }) => {
+  const rawInd = createRawIndividual(schema);
+  const { ind } = Object.keys(schema).reduce(
+    ({ remaining, ind }, key) => {
+      const representationLength = ind[key].representationLength();
+      const gene = remaining.slice(0, representationLength);
+      ind[key].setValueFromBinary(gene);
+      return {
+        ind,
+        remaining: remaining.slice(representationLength)
+      };
     },
-    { id }
+    {
+      remaining: chromosome,
+      ind: rawInd
+    }
   );
+  return ind;
 };
 
 export const calculateFitnessOfIndividual = problem => ind => {
