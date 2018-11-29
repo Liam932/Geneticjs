@@ -6,13 +6,12 @@ export default function select(
 ) {
   const samples = _.sampleSize(population, tournamentSize);
   const candidates = _.orderBy(samples, ["fitness"], ["desc"]);
-
   const prob = Math.random();
-  for (var i = 0; i < candidates.length; i++) {
-    var threshold = +selectionPressure * Math.pow(1 - selectionPressure, i);
-    if (prob < threshold) {
-      return candidates[i];
-    }
+  let threshold = 0;
+  let i = 0;
+  for (i = 0; i < candidates.length; i++) {
+    threshold += selectionPressure * Math.pow(1 - selectionPressure, i);
+    if (prob < threshold) return candidates[i];
   }
   return candidates[i - 1];
 }
