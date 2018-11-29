@@ -1,11 +1,12 @@
 import { createEvolutionPipeline } from "./pipeline";
-import { createInitialPopulation } from "./population";
+import { createInitialPopulation, bestIndividual } from "./population";
 import { calculateFitnessOfIndividual } from "./individual";
 
 export default {
   createInitialPopulation,
   createEvolutionPipeline,
-  calculateFitnessOfIndividual
+  calculateFitnessOfIndividual,
+  bestIndividual
 };
 
 export { createInitialPopulation };
@@ -13,3 +14,5 @@ export { createInitialPopulation };
 export { createEvolutionPipeline };
 
 export { calculateFitnessOfIndividual };
+
+export { bestIndividual };

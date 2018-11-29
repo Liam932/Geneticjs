@@ -2,7 +2,7 @@ const _ = require("lodash");
 
 export default function select(
   population,
-  { tournamentSize = 4, selectionPressure = 0.75 } = {}
+  { tournamentSize = 4, selectionPressure = 1 } = {}
 ) {
   const samples = _.sampleSize(population, tournamentSize);
   const candidates = _.orderBy(samples, ["fitness"], ["desc"]);

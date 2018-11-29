@@ -6,6 +6,10 @@ export default class IntAttribute {
     this.padLength = Number(schema.max).toString(2).length;
   }
 
+  isValid(val) {
+    return val > this.schema.min && val < this.schema.min;
+  }
+
   setRandomValue() {
     this.value = Number(random(this.schema.min, this.schema.max));
   }
@@ -19,6 +23,11 @@ export default class IntAttribute {
   }
 
   setValueFromBinary(string) {
-    this.value = Number(parseInt(string, 2));
+    const val = Number(parseInt(string, 2));
+    if (this.isValid(val)) {
+      this.value = Number(parseInt(string, 2));
+    } else {
+      this.setRandomValue();
+    }
   }
 }
